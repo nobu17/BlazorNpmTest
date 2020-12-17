@@ -1,0 +1,29 @@
+﻿@page "/counter"
+
+@inject IJSRuntime JSRuntime
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCountAsync">Click me</button>
+
+<p>Current time: @currentTime</p>
+
+
+<button class="btn btn-danger" @onclick="DisplayCurrentTimeAsync">Display CurrentTime</button>
+@code {
+    private int currentCount = 0;
+
+    private string currentTime;
+
+    private async Task IncrementCountAsync()
+    {
+        currentCount = await JSRuntime.InvokeAsync<int>("MyModule.sum", new object[] { currentCount, 1 });
+    }
+
+    private async Task DisplayCurrentTimeAsync()
+    {
+        currentTime = await JSRuntime.InvokeAsync<string>("MyModule.getCurrentTime");
+    }
+}
